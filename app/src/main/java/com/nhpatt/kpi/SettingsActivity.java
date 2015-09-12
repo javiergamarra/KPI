@@ -1,34 +1,22 @@
 package com.nhpatt.kpi;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
-public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
-
-        Log.d("KPI", "Starting app...");
-
-        findViewById(R.id.daily_objective).setMinimumHeight(200);
-
-        findViewById(R.id.star).setOnClickListener(this);
-
-        Toast.makeText(this, "2 tasks pending", Toast.LENGTH_SHORT).show();
+        setContentView(R.layout.activity_settings);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate(R.menu.menu_settings, menu);
         return true;
     }
 
@@ -41,15 +29,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View view) {
-        Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
     }
 }
