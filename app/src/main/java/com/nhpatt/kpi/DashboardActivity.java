@@ -5,9 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +18,8 @@ public class DashboardActivity extends AppCompatActivity {
         Log.d("KPI", "Starting app...");
 
         findViewById(R.id.daily_objective).setMinimumHeight(200);
+
+        findViewById(R.id.star).setOnClickListener(this);
 
         Toast.makeText(this, "2 tasks pending", Toast.LENGTH_SHORT).show();
     }
@@ -41,5 +44,10 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
     }
 }
