@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -16,6 +17,8 @@ public class DashboardActivity extends AppCompatActivity {
         Log.d("KPI", "Starting app...");
 
         findViewById(R.id.daily_objective).setMinimumHeight(200);
+
+        Toast.makeText(this, "2 tasks pending", Toast.LENGTH_SHORT).show();
     }
 
     @Override
