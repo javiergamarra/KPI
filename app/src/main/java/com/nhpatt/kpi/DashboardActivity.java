@@ -11,12 +11,14 @@ import android.widget.Toast;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String TAG = "KPI";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        Log.d("KPI", "Starting app...");
+        Log.d(TAG, "Starting app...");
 
         findViewById(R.id.daily_objective).setMinimumHeight(200);
 
@@ -30,6 +32,30 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "stopping");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "starting");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "resuming");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "pausing");
     }
 
     @Override
