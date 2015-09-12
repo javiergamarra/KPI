@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".DashboardActivity">
 
-    <EditText
+    <EditText android:id="@+id/daily_objective"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Set daily objective" />

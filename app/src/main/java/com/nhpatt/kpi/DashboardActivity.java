@@ -14,6 +14,8 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         Log.d("KPI", "Starting app...");
+
+        findViewById(R.id.daily_objective).setMinimumHeight(200);
     }
 
     @Override
