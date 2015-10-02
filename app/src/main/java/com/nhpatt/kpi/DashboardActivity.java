@@ -35,30 +35,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "stopping");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "starting");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "resuming");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "pausing");
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
