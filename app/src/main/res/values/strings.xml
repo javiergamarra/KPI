@@ -4,4 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="daily_objective">Set daily objective</string>
+    <string name="commits_today">Commits today</string>
 </resources>

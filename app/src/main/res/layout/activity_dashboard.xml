@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:hint="Set daily objective" />
+        android:hint="@string/daily_objective" />
 
     <ImageView
         android:id="@+id/star"
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="20dp"
-            android:text="Commits today" />
+            android:text="@string/commits_today" />
     </android.support.v7.widget.CardView>
 
 </RelativeLayout>
