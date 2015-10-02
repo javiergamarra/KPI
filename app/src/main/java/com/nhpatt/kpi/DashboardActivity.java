@@ -3,28 +3,95 @@ package com.nhpatt.kpi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DashboardActivity extends AppCompatActivity implements View.OnClickListener, OnChartValueSelectedListener {
 
     public static final String TAG = "KPI";
+    public BarChart githubChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        Log.d(TAG, "Starting app...");
-
         findViewById(R.id.daily_objective).setMinimumHeight(200);
-
         findViewById(R.id.star).setOnClickListener(this);
 
-        Toast.makeText(this, "2 tasks pending", Toast.LENGTH_SHORT).show();
+        drawChart();
+    }
+
+    private void drawChart() {
+        githubChart = (BarChart) findViewById(R.id.github);
+        githubChart.setOnChartValueSelectedListener(this);
+
+        XAxis xAxis = githubChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setSpaceBetweenLabels(2);
+
+        YAxis leftAxis = githubChart.getAxisLeft();
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setDrawLabels(false);
+
+        YAxis rightAxis = githubChart.getAxisRight();
+        rightAxis.setEnabled(false);
+
+        Legend legend = githubChart.getLegend();
+        legend.setEnabled(false);
+
+        githubChart.setDescription("");
+
+        String[] xValues = {"0", "1", "2", "3"};
+        Float[] yValues = {3.4F, 4.1F, 4.7F, 3.9F};
+        setData(xValues, yValues);
+    }
+
+    private void setData(String[] xValues, Float[] yValues) {
+
+        List<BarEntry> barEntries = new ArrayList<>();
+        for (int i = 0; i < yValues.length; i++) {
+            barEntries.add(new BarEntry(yValues[i], i));
+        }
+
+        BarDataSet barDataSet = new BarDataSet(barEntries, "");
+        barDataSet.setBarSpacePercent(35f);
+        barDataSet.setColor(getResources().getColor(R.color.accent));
+
+        ArrayList<BarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(barDataSet);
+
+        BarData data = new BarData(xValues, dataSets);
+        data.setValueTextSize(10f);
+
+        githubChart.setData(data);
+    }
+
+    @Override
+    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+
+    }
+
+    @Override
+    public void onNothingSelected() {
+
     }
 
     @Override
@@ -54,4 +121,5 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
     }
+
 }
