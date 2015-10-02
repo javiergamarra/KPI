@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,9 +9,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".DashboardActivity">
 
-    <EditText android:id="@+id/daily_objective"
+    <EditText
+        android:id="@+id/daily_objective"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:hint="Set daily objective" />
 
     <LinearLayout
@@ -21,7 +23,8 @@
         android:paddingTop="10dp">
 
 
-        <ImageView android:id="@+id/star"
+        <ImageView
+            android:id="@+id/star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/star" />
@@ -63,4 +66,4 @@
             android:text="Commits today" />
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</RelativeLayout>
