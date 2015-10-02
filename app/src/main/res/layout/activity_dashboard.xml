@@ -16,38 +16,14 @@
         android:layout_alignParentBottom="true"
         android:hint="Set daily objective" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/star"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/card_view"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
-
-
-        <ImageView
-            android:id="@+id/star"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/star" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="important" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/calendar" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="urgent" />
-
-    </LinearLayout>
+        android:layout_alignBottom="@id/daily_objective"
+        android:layout_alignRight="@id/daily_objective"
+        android:layout_alignTop="@id/daily_objective"
+        android:src="@drawable/star" />
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
