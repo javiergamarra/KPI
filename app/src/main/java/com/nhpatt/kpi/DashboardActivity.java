@@ -1,6 +1,8 @@
 package com.nhpatt.kpi;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -45,6 +47,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         dailyObjective.setMinimumHeight(200);
 
         dailyObjective.addTextChangedListener(this);
+
+        dailyObjective.setText(getSharedPreferences().getString("objective", ""));
 
         findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,30 +161,22 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        objective = s.toString();
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE);
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
+        objective = s.toString();
 
+        SharedPreferences preferences = getSharedPreferences();
+        preferences.edit().putString("objective", objective).commit();
     }
 
     @Override
     public void afterTextChanged(Editable s) {
 
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putString("objective", objective);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        objective = savedInstanceState.getString("objective");
     }
 }
