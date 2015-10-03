@@ -33,7 +33,12 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_dashboard);
 
         findViewById(R.id.daily_objective).setMinimumHeight(200);
-        findViewById(R.id.star).setOnClickListener(this);
+        findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardActivity.this, SettingsActivity.class));
+            }
+        });
 
         drawChart();
     }
