@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -65,6 +66,10 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         drawChart();
 
         Log.d(TAG, "Objective: " + objective);
+
+
+        View content = findViewById(android.R.id.content);
+        Snackbar.make(content, "Hola !", Snackbar.LENGTH_SHORT).show();
     }
 
     protected void onActivityResult(int requestCode,
