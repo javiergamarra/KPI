@@ -4,9 +4,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -23,17 +27,23 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DashboardActivity extends AppCompatActivity implements View.OnClickListener, OnChartValueSelectedListener {
+public class DashboardActivity extends AppCompatActivity implements View.OnClickListener, OnChartValueSelectedListener, TextWatcher {
 
     public static final String TAG = "KPI";
     public BarChart githubChart;
+
+    public String objective;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        findViewById(R.id.daily_objective).setMinimumHeight(200);
+        TextView dailyObjective = (TextView) findViewById(R.id.daily_objective);
+        dailyObjective.setMinimumHeight(200);
+
+        dailyObjective.addTextChangedListener(this);
+
         findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,6 +53,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         });
 
         drawChart();
+
+        Log.d(TAG, "Objective: " + objective);
     }
 
     private void drawChart() {
@@ -129,6 +141,21 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        objective = s.toString();
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 
 }
