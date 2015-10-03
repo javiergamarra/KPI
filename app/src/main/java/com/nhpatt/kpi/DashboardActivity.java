@@ -1,8 +1,9 @@
 package com.nhpatt.kpi;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,14 +49,24 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.nhpatt.com"));
-                startActivity(intent);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                startActivityForResult(intent, 1);
             }
         });
 
         drawChart();
 
         Log.d(TAG, "Objective: " + objective);
+    }
+
+    protected void onActivityResult(int requestCode,
+                                    int resultCode, Intent data) {
+        Bundle extras = data.getExtras();
+        Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        imageView.setImageBitmap(imageBitmap);
     }
 
     private void drawChart() {
