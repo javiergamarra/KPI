@@ -44,20 +44,23 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_dashboard);
 
         TextView dailyObjective = (TextView) findViewById(R.id.daily_objective);
-        dailyObjective.setMinimumHeight(200);
+        if (dailyObjective != null) {
+            dailyObjective.setMinimumHeight(200);
+            dailyObjective.addTextChangedListener(this);
+            dailyObjective.setText(getSharedPreferences().getString("objective", ""));
+        }
 
-        dailyObjective.addTextChangedListener(this);
+        View star = findViewById(R.id.star);
+        if (star != null) {
+            star.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        dailyObjective.setText(getSharedPreferences().getString("objective", ""));
-
-        findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                startActivityForResult(intent, 1);
-            }
-        });
+                    startActivityForResult(intent, 1);
+                }
+            });
+        }
 
         drawChart();
 
