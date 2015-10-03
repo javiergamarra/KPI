@@ -158,4 +158,17 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("objective", objective);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        objective = savedInstanceState.getString("objective");
+    }
 }
