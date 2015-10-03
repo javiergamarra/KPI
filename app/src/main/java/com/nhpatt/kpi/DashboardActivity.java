@@ -1,6 +1,7 @@
 package com.nhpatt.kpi;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -36,7 +37,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.star).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DashboardActivity.this, SettingsActivity.class));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.nhpatt.com"));
+                startActivity(intent);
             }
         });
 
