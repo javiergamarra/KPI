@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -11,6 +12,9 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        boolean value = getIntent().getBooleanExtra("example", false);
+        Toast.makeText(this, String.valueOf(value), Toast.LENGTH_SHORT).show();
     }
 
     @Override

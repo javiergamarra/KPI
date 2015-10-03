@@ -117,7 +117,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
+            Intent intent = new Intent(this, SettingsActivity.class);
+            intent.putExtra("example", true);
+            startActivity(intent);
             return true;
         }
 
