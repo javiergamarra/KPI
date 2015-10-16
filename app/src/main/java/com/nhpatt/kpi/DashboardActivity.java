@@ -145,12 +145,12 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        objective = s.toString();
+
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+        objective = s.toString();
     }
 
     @Override
@@ -163,6 +163,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         super.onSaveInstanceState(outState);
 
         outState.putString("objective", objective);
+
     }
 
     @Override
