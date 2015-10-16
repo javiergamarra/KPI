@@ -29,6 +29,7 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.4'
 
     compile 'com.android.support:design:+'
+    compile 'com.android.support:recyclerview-v7:+'
 }
 
 repositories {

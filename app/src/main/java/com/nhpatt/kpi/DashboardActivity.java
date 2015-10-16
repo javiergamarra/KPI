@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -71,10 +73,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         Show homeland = new Show("Homeland");
         List<Show> shows = new ArrayList<>(Arrays.asList(tbbt, homeland));
 
-        ShowListAdapter adapter = new ShowListAdapter(this, shows);
+        ShowsAdapter adapter = new ShowsAdapter(shows);
 
-        ListView showsList = (ListView) findViewById(R.id.shows);
-        showsList.setAdapter(adapter);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.shows);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         shows.add(new Show("Heroes Reborn"));
         adapter.notifyDataSetChanged();
