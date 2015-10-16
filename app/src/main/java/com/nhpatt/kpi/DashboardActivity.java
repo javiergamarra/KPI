@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener, OnChartValueSelectedListener, TextWatcher {
@@ -53,6 +56,15 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         });
 
         drawChart();
+
+        ListView listShows = (ListView) findViewById(R.id.shows);
+        List<String> text = new ArrayList<>(Arrays.asList("uno", "dos"));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, text);
+        listShows.setAdapter(adapter);
+
+        text.add("tres");
+        adapter.notifyDataSetChanged();
+
 
         Log.d(TAG, "Objective: " + objective);
     }
