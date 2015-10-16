@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,17 +67,19 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         drawChart();
 
-        ListView listShows = (ListView) findViewById(R.id.shows);
-        List<String> text = new ArrayList<>(Arrays.asList("uno", "dos"));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, text);
-        listShows.setAdapter(adapter);
+        Show tbbt = new Show("The Big Bang Theory");
+        Show homeland = new Show("Homeland");
+        List<Show> shows = new ArrayList<>(Arrays.asList(tbbt, homeland));
 
-        text.add("tres");
+        ShowListAdapter adapter = new ShowListAdapter(this, shows);
+
+        ListView showsList = (ListView) findViewById(R.id.shows);
+        showsList.setAdapter(adapter);
+
+        shows.add(new Show("Heroes Reborn"));
         adapter.notifyDataSetChanged();
 
-
         Log.d(TAG, "Objective: " + objective);
-
 
         View content = findViewById(android.R.id.content);
         Snackbar.make(content, "Hola !", Snackbar.LENGTH_SHORT).show();
