@@ -6,4 +6,5 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="daily_objective">Set daily objective</string>
     <string name="commits_today">Commits today</string>
+    <string name="star">star</string>
 </resources>
