@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,11 +30,19 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.nhpatt.kpi.service.CommitActivity;
+import com.nhpatt.kpi.service.GitHubService;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
+import retrofit.SimpleXmlConverterFactory;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener, OnChartValueSelectedListener, TextWatcher {
 
@@ -83,13 +90,32 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        shows.add(new Show("Heroes Reborn"));
-        adapter.notifyDataSetChanged();
+        requestCommits();
+    }
 
-        Log.d(TAG, "Objective: " + objective);
+    private void requestCommits() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.github.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        View content = findViewById(android.R.id.content);
-        Snackbar.make(content, "Hola !", Snackbar.LENGTH_SHORT).show();
+        GitHubService service = retrofit.create(GitHubService.class);
+
+        service.commitsPerWeek("nhpatt", "KPI").enqueue(new Callback<List<CommitActivity>>() {
+            @Override
+            public void onResponse(Response<List<CommitActivity>> response, Retrofit retrofit) {
+                View content = findViewById(android.R.id.content);
+
+                String message = "Last commits: " + response.body().get(response.body().size() - 1).getTotal();
+
+                Snackbar.make(content, message, Snackbar.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 
     protected void onActivityResult(int requestCode,
