@@ -31,22 +31,22 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.nhpatt.kpi.adapters.ShowsAdapter;
+import com.nhpatt.kpi.async.ShowsAsyncTask;
+import com.nhpatt.kpi.models.Channel;
+import com.nhpatt.kpi.models.CommitActivity;
 import com.nhpatt.kpi.models.Show;
 import com.nhpatt.kpi.models.XML;
-import com.nhpatt.kpi.models.CommitActivity;
 import com.nhpatt.kpi.service.GitHubService;
-import com.nhpatt.kpi.service.ShowsService;
 import com.squareup.picasso.Picasso;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
-import retrofit.SimpleXmlConverterFactory;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener, OnChartValueSelectedListener, TextWatcher {
 
@@ -54,6 +54,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     public BarChart githubChart;
 
     public String objective;
+    private List<Show> shows;
+    private ShowsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +86,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         drawChart();
 
-        Show tbbt = new Show("The Big Bang Theory");
-        Show homeland = new Show("Homeland");
-        List<Show> shows = new ArrayList<>(Arrays.asList(tbbt, homeland));
+        shows = new ArrayList<>();
 
-        ShowsAdapter adapter = new ShowsAdapter(shows);
+        adapter = new ShowsAdapter(shows);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.shows);
         recyclerView.setAdapter(adapter);
@@ -125,23 +125,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void requestShows() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://showrss.info/")
-                .addConverterFactory(SimpleXmlConverterFactory.create())
-                .build();
-
-        ShowsService showsService = retrofit.create(ShowsService.class);
-        showsService.showToWatch().enqueue(new Callback<XML>() {
-            @Override
-            public void onResponse(Response<XML> response, Retrofit retrofit) {
-                Log.e(TAG, response.toString());
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                Log.e(TAG, t.getMessage());
-            }
-        });
+        ShowsAsyncTask showsAsyncTask = new ShowsAsyncTask(new WeakReference<>(this));
+        showsAsyncTask.execute();
     }
 
     protected void onActivityResult(int requestCode,
@@ -258,5 +243,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    public void renderShows(XML xml) {
+        Channel channel = xml.getChannel();
+
+        for (Show show : channel.getShows()) {
+            shows.add(show);
+        }
+        adapter.notifyDataSetChanged();
     }
 }
