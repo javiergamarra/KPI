@@ -32,6 +32,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.nhpatt.kpi.service.CommitActivity;
 import com.nhpatt.kpi.service.GitHubService;
+import com.nhpatt.kpi.service.ShowsService;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -91,6 +92,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         requestCommits();
+
+        requestShows();
     }
 
     private void requestCommits() {
@@ -109,6 +112,26 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 String message = "Last commits: " + response.body().get(response.body().size() - 1).getTotal();
 
                 Snackbar.make(content, message, Snackbar.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    private void requestShows() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://showrss.info/")
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .build();
+
+        ShowsService showsService = retrofit.create(ShowsService.class);
+        showsService.showToWatch().enqueue(new Callback<XML>() {
+            @Override
+            public void onResponse(Response<XML> response, Retrofit retrofit) {
+                Log.e(TAG, response.toString());
             }
 
             @Override

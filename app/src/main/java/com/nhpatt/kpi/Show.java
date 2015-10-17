@@ -1,26 +1,35 @@
 package com.nhpatt.kpi;
 
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+
 import java.util.Date;
 
 /**
  * @author Javier Gamarra
  */
+@Root(name = "item", strict = false)
 public class Show {
 
-    public String name;
+    @Element
+    public String title;
     public Date date;
 
-    public Show(String name) {
-        this.name = name;
+    public Show() {
+        super();
+    }
+
+    public Show(String title) {
+        this.title = title;
         this.date = new Date();
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Date getDate() {
