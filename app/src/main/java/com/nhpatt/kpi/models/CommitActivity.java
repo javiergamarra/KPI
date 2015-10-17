@@ -1,4 +1,4 @@
-package com.nhpatt.kpi.service;
+package com.nhpatt.kpi.models;
 
 /**
  * @author Javier Gamarra

@@ -1,5 +1,7 @@
 package com.nhpatt.kpi.service;
 
+import com.nhpatt.kpi.models.CommitActivity;
+
 import java.util.List;
 
 import retrofit.Call;

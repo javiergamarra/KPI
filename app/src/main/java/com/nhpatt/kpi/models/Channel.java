@@ -1,4 +1,4 @@
-package com.nhpatt.kpi;
+package com.nhpatt.kpi.models;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;

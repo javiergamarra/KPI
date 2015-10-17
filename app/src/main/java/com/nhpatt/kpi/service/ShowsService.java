@@ -1,6 +1,6 @@
 package com.nhpatt.kpi.service;
 
-import com.nhpatt.kpi.XML;
+import com.nhpatt.kpi.models.XML;
 
 import retrofit.Call;
 import retrofit.http.GET;
