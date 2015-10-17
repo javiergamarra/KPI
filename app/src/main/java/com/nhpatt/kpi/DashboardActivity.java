@@ -31,6 +31,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +48,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        Picasso.with(this).load("https://pbs.twimg.com/profile_images/1210256780/avatar.jpg").into(imageView);
 
         TextView dailyObjective = (TextView) findViewById(R.id.daily_objective);
         if (dailyObjective != null) {
