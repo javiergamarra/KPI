@@ -30,7 +30,7 @@ public class ShowListAdapter extends ArrayAdapter<Show> {
         TextView showDate = (TextView) convertView.findViewById(R.id.show_date);
         TextView showName = (TextView) convertView.findViewById(R.id.show_name);
 
-        showDate.setText(new SimpleDateFormat("dd/MM").format(show.getDate()));
+        showDate.setText(SimpleDateFormat.getDateInstance().format(show.getDate()));
         showName.setText(show.getTitle());
 
         return convertView;

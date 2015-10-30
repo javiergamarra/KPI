@@ -52,7 +52,9 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
 
         public void bind(Show show) {
             name.setText(show.getTitle());
-            date.setText(new SimpleDateFormat("dd/MM").format(show.getDate()));
+            if (show.getDate() != null) {
+                date.setText(SimpleDateFormat.getDateInstance().format(show.getDate()));
+            }
         }
     }
 }
