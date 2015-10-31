@@ -7,6 +7,7 @@ import com.evernote.android.job.JobCreator;
 import com.evernote.android.job.JobManager;
 import com.nhpatt.kpi.jobs.FilmsJob;
 import com.orm.SugarApp;
+import com.squareup.leakcanary.LeakCanary;
 
 /**
  * @author Javier Gamarra
@@ -18,6 +19,8 @@ public class KPIApplication extends SugarApp {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        LeakCanary.install(this);
 
         JobManager.create(this, new MyJobCreator());
     }
