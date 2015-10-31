@@ -9,7 +9,7 @@ import java.util.Date;
  * @author Javier Gamarra
  */
 @Root(name = "item", strict = false)
-public class Show {
+public class Show implements TitleAndDate {
 
     @Element
     public String title;

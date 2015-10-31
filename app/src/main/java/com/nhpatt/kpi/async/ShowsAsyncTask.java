@@ -54,7 +54,7 @@ public class ShowsAsyncTask extends AsyncTask<Void, Void, XML> {
         super.onPostExecute(xml);
 
         DashboardActivity activity = dashboardActivity.get();
-        if (activity != null) {
+        if (activity != null && xml != null) {
             activity.renderShows(xml);
         }
     }

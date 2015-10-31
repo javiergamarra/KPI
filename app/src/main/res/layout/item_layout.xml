@@ -5,7 +5,7 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/show_date"
+        android:id="@+id/item_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -16,11 +16,11 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_toRightOf="@+id/show_date"
+        android:layout_toRightOf="@+id/item_date"
         android:background="@color/primary" />
 
     <TextView
-        android:id="@+id/show_name"
+        android:id="@+id/item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/separator" />
