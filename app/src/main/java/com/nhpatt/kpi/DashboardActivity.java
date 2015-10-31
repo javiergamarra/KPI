@@ -17,6 +17,7 @@ import com.nhpatt.kpi.async.ShowsAsyncTask;
 import com.nhpatt.kpi.graphs.BarChartRenderer;
 import com.nhpatt.kpi.models.Channel;
 import com.nhpatt.kpi.models.CommitActivity;
+import com.nhpatt.kpi.models.Film;
 import com.nhpatt.kpi.models.Show;
 import com.nhpatt.kpi.models.XML;
 import com.nhpatt.kpi.service.GitHubService;
@@ -25,6 +26,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
@@ -45,6 +47,29 @@ public class DashboardActivity extends AppCompatActivity
         requestShows();
         requestFilms();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        EventBus.getDefault().unregister(this);
+
+        super.onPause();
+    }
+
+    public void onEventMainThread(List<Film> films) {
+        TitleAndDateAdapter filmsAdapter = new TitleAndDateAdapter(films);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.films);
+        recyclerView.setAdapter(filmsAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(DashboardActivity.this));
+    }
+
 
     private void requestCommits() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -109,14 +134,10 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     private void requestFilms() {
-//                TitleAndDateAdapter filmsAdapter = new TitleAndDateAdapter((List) msg.obj);
-//
-//                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.films);
-//                recyclerView.setAdapter(filmsAdapter);
-//                recyclerView.setLayoutManager(new LinearLayoutManager(DashboardActivity.this));
+
 
         new JobRequest.Builder("films")
-                .setExecutionWindow(30_000L, 40_000L)
+                .setExecutionWindow(1L, 40_000L)
                 .build()
                 .schedule();
 

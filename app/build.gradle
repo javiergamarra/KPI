@@ -42,6 +42,7 @@ dependencies {
     }
 
     compile 'com.evernote:android-job:1.+'
+    compile 'de.greenrobot:eventbus:2.4.0'
 }
 
 repositories {

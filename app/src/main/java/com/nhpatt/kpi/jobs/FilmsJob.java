@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * @author Javier Gamarra
  */
@@ -44,7 +46,7 @@ public class FilmsJob extends Job {
 
             List<Film> films = parseFilms(text);
 
-            //FIXME !
+            EventBus.getDefault().post(films);
 
             return Result.SUCCESS;
 
