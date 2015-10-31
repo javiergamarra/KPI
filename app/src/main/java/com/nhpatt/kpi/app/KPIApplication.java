@@ -1,7 +1,5 @@
 package com.nhpatt.kpi.app;
 
-import android.app.Application;
-
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobCreator;
 import com.evernote.android.job.JobManager;

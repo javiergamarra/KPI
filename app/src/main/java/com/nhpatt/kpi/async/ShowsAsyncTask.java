@@ -1,9 +1,11 @@
 package com.nhpatt.kpi.async;
 
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.nhpatt.kpi.DashboardActivity;
+import com.nhpatt.kpi.fragments.ShowsFragment;
 import com.nhpatt.kpi.models.XML;
 import com.nhpatt.kpi.service.ShowsService;
 
@@ -18,10 +20,10 @@ import retrofit.SimpleXmlConverterFactory;
  */
 public class ShowsAsyncTask extends AsyncTask<Void, Void, XML> {
 
-    private final WeakReference<DashboardActivity> dashboardActivity;
+    private final ShowsFragment showsFragment;
 
-    public ShowsAsyncTask(WeakReference<DashboardActivity> dashboardActivity) {
-        this.dashboardActivity = dashboardActivity;
+    public ShowsAsyncTask(ShowsFragment showsFragment) {
+        this.showsFragment = showsFragment;
     }
 
     @Override
@@ -53,9 +55,8 @@ public class ShowsAsyncTask extends AsyncTask<Void, Void, XML> {
     protected void onPostExecute(XML xml) {
         super.onPostExecute(xml);
 
-        DashboardActivity activity = dashboardActivity.get();
-        if (activity != null && xml != null) {
-            activity.renderShows(xml);
+        if (showsFragment != null && xml != null) {
+            showsFragment.renderShows(xml);
         }
     }
 }
