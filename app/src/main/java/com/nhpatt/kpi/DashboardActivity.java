@@ -17,6 +17,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.nhpatt.kpi.adapters.TitleAndDateAdapter;
 import com.nhpatt.kpi.app.KPIApplication;
 import com.nhpatt.kpi.async.ShowsAsyncTask;
+import com.nhpatt.kpi.fragments.FilmsFragment;
 import com.nhpatt.kpi.graphs.BarChartRenderer;
 import com.nhpatt.kpi.models.Channel;
 import com.nhpatt.kpi.models.CommitActivity;
@@ -45,6 +46,11 @@ public class DashboardActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, new FilmsFragment())
+                .commit();
     }
 
     @Override
