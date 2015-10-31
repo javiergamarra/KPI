@@ -30,7 +30,7 @@ public class ShowsJob extends Job {
             EventBus.getDefault().post(showsService.showToWatch().execute().body());
             return Result.SUCCESS;
         } catch (IOException e) {
-            Log.e("TAG", e.getMessage(), e);
+            Log.e("TAG", "Error retrieving shows", e);
         }
         return Result.FAILURE;
     }

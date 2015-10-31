@@ -24,7 +24,7 @@ import de.greenrobot.event.EventBus;
 /**
  * @author Javier Gamarra
  */
-public class FilmsFragment extends Fragment {
+public class FilmsFragment extends EventBusFragment {
 
     public static FilmsFragment newInstance() {
 
@@ -43,20 +43,6 @@ public class FilmsFragment extends Fragment {
         requestFilms();
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onPause() {
-        EventBus.getDefault().unregister(this);
-
-        super.onPause();
     }
 
     public void onEventMainThread(List<Film> films) {
