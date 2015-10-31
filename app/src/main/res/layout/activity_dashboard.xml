@@ -12,24 +12,11 @@
         android:minHeight="200dp"
         card_view:cardCornerRadius="4dp">
 
-        <LinearLayout
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/github"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="150dp" />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/github"
-                android:layout_width="match_parent"
-                android:layout_height="150dp" />
-
-            <TextView
-                android:id="@+id/info_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:text="@string/commits_today" />
-
-        </LinearLayout>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -48,29 +35,5 @@
             android:layout_height="200dp" />
 
     </android.support.v7.widget.CardView>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/daily_objective" />
-
-    <EditText
-        android:id="@+id/daily_objective"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:hint="@string/daily_objective" />
-
-    <ImageView
-        android:id="@+id/star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/daily_objective"
-        android:layout_alignRight="@id/daily_objective"
-        android:layout_alignTop="@id/daily_objective"
-        android:contentDescription="@string/star"
-        android:src="@drawable/star"
-        android:tint="@color/accent" />
 
 </RelativeLayout>

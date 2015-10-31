@@ -1,6 +1,5 @@
 package com.nhpatt.kpi.async;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
