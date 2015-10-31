@@ -1,11 +1,13 @@
 package com.nhpatt.kpi.models;
 
+import com.orm.SugarRecord;
+
 import java.util.Date;
 
 /**
  * @author Javier Gamarra
  */
-public class Film implements TitleAndDate {
+public class Film extends SugarRecord implements TitleAndDate {
 
     private String title;
     private Date date;

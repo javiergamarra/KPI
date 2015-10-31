@@ -1,5 +1,8 @@
 package com.nhpatt.kpi;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,10 +45,6 @@ public class DashboardActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
-        requestCommits();
-        requestShows();
-        requestFilms();
     }
 
     @Override
@@ -53,6 +52,10 @@ public class DashboardActivity extends AppCompatActivity
         super.onResume();
 
         EventBus.getDefault().register(this);
+
+        requestCommits();
+        requestShows();
+        requestFilms();
     }
 
     @Override
@@ -62,7 +65,7 @@ public class DashboardActivity extends AppCompatActivity
         super.onPause();
     }
 
-    public void onEventMainThread(List<Film> films) {
+    public void onEvent(List<Film> films) {
         TitleAndDateAdapter filmsAdapter = new TitleAndDateAdapter(films);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.films);
@@ -134,13 +137,22 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     private void requestFilms() {
+        if (!isNetworkAvailable()) {
+            List<Film> films = Film.listAll(Film.class);
+            EventBus.getDefault().post(films);
+        } else {
+            new JobRequest.Builder("films")
+                    .setExact(1L)
+                    .build()
+                    .schedule();
+        }
+    }
 
-
-        new JobRequest.Builder("films")
-                .setExecutionWindow(1L, 40_000L)
-                .build()
-                .schedule();
-
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override

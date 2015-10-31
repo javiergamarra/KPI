@@ -33,6 +33,7 @@ public class FilmsJob extends Job {
     @NonNull
     protected Result onRunJob(Params params) {
         try {
+
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
@@ -45,6 +46,10 @@ public class FilmsJob extends Job {
             String text = response.body().string();
 
             List<Film> films = parseFilms(text);
+
+            for (Film film : films) {
+                film.save();
+            }
 
             EventBus.getDefault().post(films);
 
