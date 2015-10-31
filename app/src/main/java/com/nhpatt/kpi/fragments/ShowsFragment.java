@@ -9,15 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.evernote.android.job.JobRequest;
 import com.nhpatt.kpi.R;
 import com.nhpatt.kpi.adapters.TitleAndDateAdapter;
-import com.nhpatt.kpi.async.ShowsAsyncTask;
 import com.nhpatt.kpi.models.Channel;
 import com.nhpatt.kpi.models.Show;
 import com.nhpatt.kpi.models.XML;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * @author Javier Gamarra
@@ -48,6 +50,20 @@ public class ShowsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        EventBus.getDefault().unregister(this);
+
+        super.onPause();
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -59,11 +75,13 @@ public class ShowsFragment extends Fragment {
 
         showsAdapter = new TitleAndDateAdapter(shows);
 
-        ShowsAsyncTask showsAsyncTask = new ShowsAsyncTask(this);
-        showsAsyncTask.execute();
+        new JobRequest.Builder("shows")
+                .setExact(1L)
+                .build()
+                .schedule();
     }
 
-    public void renderShows(XML xml) {
+    public void onEventMainThread(XML xml) {
         Channel channel = xml.getChannel();
 
         for (Show show : channel.getShows()) {
@@ -71,4 +89,5 @@ public class ShowsFragment extends Fragment {
         }
         showsAdapter.notifyDataSetChanged();
     }
+
 }

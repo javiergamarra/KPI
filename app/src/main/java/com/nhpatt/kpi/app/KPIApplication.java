@@ -4,6 +4,7 @@ import com.evernote.android.job.Job;
 import com.evernote.android.job.JobCreator;
 import com.evernote.android.job.JobManager;
 import com.nhpatt.kpi.jobs.FilmsJob;
+import com.nhpatt.kpi.jobs.ShowsJob;
 import com.orm.SugarApp;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -27,6 +28,8 @@ public class KPIApplication extends SugarApp {
         @Override
         public Job create(String tag) {
             switch (tag) {
+                case "shows":
+                    return new ShowsJob();
                 default:
                     return new FilmsJob();
             }
