@@ -30,6 +30,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -39,6 +41,8 @@ import retrofit.Retrofit;
 public class DashboardActivity extends AppCompatActivity
         implements OnChartValueSelectedListener {
 
+    @Bind(R.id.shows)
+    public RecyclerView showsRecyclerView;
     private List<Show> shows;
     private TitleAndDateAdapter showsAdapter;
 
@@ -46,6 +50,8 @@ public class DashboardActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        ButterKnife.bind(this);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -71,12 +77,12 @@ public class DashboardActivity extends AppCompatActivity
         super.onPause();
     }
 
-    public void onEvent(List<Film> films) {
+    public void onEventMainThread(List<Film> films) {
         TitleAndDateAdapter filmsAdapter = new TitleAndDateAdapter(films);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.films);
-        recyclerView.setAdapter(filmsAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(DashboardActivity.this));
+        RecyclerView filmsRecyclerView = (RecyclerView) findViewById(R.id.films);
+        filmsRecyclerView.setAdapter(filmsAdapter);
+        filmsRecyclerView.setLayoutManager(new LinearLayoutManager(DashboardActivity.this));
     }
 
 
@@ -125,9 +131,8 @@ public class DashboardActivity extends AppCompatActivity
 
         showsAdapter = new TitleAndDateAdapter(shows);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.shows);
-        recyclerView.setAdapter(showsAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        showsRecyclerView.setAdapter(showsAdapter);
+        showsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ShowsAsyncTask showsAsyncTask = new ShowsAsyncTask(new WeakReference<>(this));
         showsAsyncTask.execute();
