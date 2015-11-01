@@ -3,7 +3,7 @@ package com.nhpatt.kpi.models;
 /**
  * @author Javier Gamarra
  */
-public class CommitActivity {
+public class Commit {
 
     private int total;
     private int week;

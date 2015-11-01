@@ -5,7 +5,8 @@ import android.util.Log;
 
 import com.evernote.android.job.Job;
 import com.nhpatt.kpi.app.KPIApplication;
-import com.nhpatt.kpi.models.CommitActivity;
+import com.nhpatt.kpi.models.Commit;
+import com.nhpatt.kpi.models.CommitPerYear;
 import com.nhpatt.kpi.service.GitHubService;
 
 import java.io.IOException;
@@ -31,8 +32,8 @@ public class GithubJob extends Job {
 
             GitHubService service = retrofit.create(GitHubService.class);
 
-            Response<List<CommitActivity>> response = service.commitsPerWeek("nhpatt", "KPI").execute();
-            EventBus.getDefault().post(response.body());
+            Response<List<Commit>> response = service.commitsPerWeek("nhpatt", "KPI").execute();
+            EventBus.getDefault().post(new CommitPerYear(response.body()));
             return Result.SUCCESS;
         } catch (IOException e) {
             Log.e(KPIApplication.TAG, "Error retrieving commits", e);

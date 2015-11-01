@@ -1,8 +1,5 @@
 package com.nhpatt.kpi.fragments;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,24 +9,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.evernote.android.job.JobRequest;
+import com.nhpatt.kpi.HasFilms;
 import com.nhpatt.kpi.R;
 import com.nhpatt.kpi.adapters.TitleAndDateAdapter;
 import com.nhpatt.kpi.models.Film;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * @author Javier Gamarra
  */
-public class FilmsFragment extends EventBusFragment {
+public class FilmsFragment extends Fragment implements Notifiable {
+
+    private List films;
+    private TitleAndDateAdapter filmsAdapter;
 
     public static FilmsFragment newInstance() {
-
         Bundle args = new Bundle();
-
         FilmsFragment fragment = new FilmsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -40,35 +37,31 @@ public class FilmsFragment extends EventBusFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.films, container, false);
 
-        requestFilms();
+        films = new ArrayList();
+        filmsAdapter = new TitleAndDateAdapter(films);
+
+        RecyclerView filmsRecyclerView = (RecyclerView) view.findViewById(R.id.films);
+        filmsRecyclerView.setAdapter(filmsAdapter);
+        filmsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return view;
     }
 
-    public void onEventMainThread(List<Film> films) {
-        TitleAndDateAdapter filmsAdapter = new TitleAndDateAdapter(films);
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        RecyclerView filmsRecyclerView = (RecyclerView) getActivity().findViewById(R.id.films);
-        filmsRecyclerView.setAdapter(filmsAdapter);
-        filmsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        notifyEvent();
     }
 
-    private void requestFilms() {
-        if (!isNetworkAvailable()) {
-            List<Film> films = Film.listAll(Film.class);
-            EventBus.getDefault().post(films);
-        } else {
-            new JobRequest.Builder("films")
-                    .setExact(1L)
-                    .build()
-                    .schedule();
+    @Override
+    public void notifyEvent() {
+        List<Film> newFilms = ((HasFilms) getActivity()).getFilms();
+        if (!newFilms.isEmpty()){
+            films.clear();
+            this.films.addAll(newFilms);
+            filmsAdapter.notifyDataSetChanged();
         }
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 }
