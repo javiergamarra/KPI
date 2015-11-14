@@ -1,6 +1,8 @@
 package com.nhpatt.kpi;
 
 import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -8,9 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.evernote.android.job.JobRequest;
 import com.nhpatt.kpi.adapters.SmartFragmentStatePagerAdapter;
+import com.nhpatt.kpi.app.KPIApplication;
 import com.nhpatt.kpi.fragments.FilmsFragment;
 import com.nhpatt.kpi.fragments.GithubFragment;
 import com.nhpatt.kpi.fragments.Notifiable;
@@ -61,6 +65,18 @@ public class DashboardActivity extends AppCompatActivity
         launchJob("github");
         launchJob("shows");
         requestFilms();
+
+        retrieveGPSLocation();
+    }
+
+    private void retrieveGPSLocation() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        if (location != null) {
+            Log.d(KPIApplication.TAG, location.toString());
+        }
     }
 
     private void launchJob(String job) {
