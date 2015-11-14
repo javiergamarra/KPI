@@ -40,4 +40,16 @@ public class GithubJob extends Job {
         }
         return Result.FAILURE;
     }
+
+    @NonNull
+    private List<Commit> loadFromDatabase() {
+        SQLiteDatabase database = new KPIOpenHelper(getContext()).getReadableDatabase();
+        Cursor cursor = database.query(Commit.TABLE_NAME, null, null,
+                null, null, null, null, null);
+        List<Commit> commits = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            commits.add(new Commit(cursor.getInt(0), cursor.getInt(1)));
+        }
+        return commits;
+    }
 }
