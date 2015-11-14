@@ -5,8 +5,17 @@ package com.nhpatt.kpi.models;
  */
 public class Commit {
 
+    public static final String TABLE_NAME = "COMMITS";
+    public static final String WEEK = "WEEK";
+    public static final String TOTAL = "TOTAL";
+
     private int total;
     private int week;
+
+    public Commit(int week, int total) {
+        this.week = week;
+        this.total = total;
+    }
 
     public int getTotal() {
         return total;
