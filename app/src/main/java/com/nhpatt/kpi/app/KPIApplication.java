@@ -7,7 +7,6 @@ import com.nhpatt.kpi.jobs.FilmsJob;
 import com.nhpatt.kpi.jobs.GithubJob;
 import com.nhpatt.kpi.jobs.ShowsJob;
 import com.orm.SugarApp;
-import com.squareup.leakcanary.LeakCanary;
 
 /**
  * @author Javier Gamarra
@@ -20,9 +19,14 @@ public class KPIApplication extends SugarApp {
     public void onCreate() {
         super.onCreate();
 
-        LeakCanary.install(this);
+//        LeakCanary.install(this);
 
         JobManager.create(this, new MyJobCreator());
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
     }
 
     private class MyJobCreator implements JobCreator {

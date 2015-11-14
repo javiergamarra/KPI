@@ -71,9 +71,9 @@ public class DashboardActivity extends AppCompatActivity
         launchJob("shows");
         requestFilms();
 
-        retrieveGPSLocation();
+//        retrieveGPSLocation();
 
-        retrieveGPSbyFusedLocation();
+//        retrieveGPSbyFusedLocation();
     }
 
     private void retrieveGPSbyFusedLocation() {
