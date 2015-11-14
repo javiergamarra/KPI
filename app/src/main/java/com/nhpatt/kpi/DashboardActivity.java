@@ -14,6 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.evernote.android.job.JobRequest;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.nhpatt.kpi.adapters.SmartFragmentStatePagerAdapter;
 import com.nhpatt.kpi.app.KPIApplication;
 import com.nhpatt.kpi.fragments.FilmsFragment;
@@ -32,7 +35,7 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
 public class DashboardActivity extends AppCompatActivity
-        implements HasFilms, HasCommits, HasXML {
+        implements HasFilms, HasCommits, HasXML, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final int GITHUB_VIEW = 0;
     public static final int SHOWS_VIEW = 1;
@@ -45,6 +48,7 @@ public class DashboardActivity extends AppCompatActivity
     private CommitPerYear commitPerYear;
     private ViewPagerAdapter viewPagerAdapter;
     private List<Film> films = new ArrayList<>();
+    private GoogleApiClient apiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,17 @@ public class DashboardActivity extends AppCompatActivity
         requestFilms();
 
         retrieveGPSLocation();
+
+        retrieveGPSbyFusedLocation();
+    }
+
+    private void retrieveGPSbyFusedLocation() {
+        apiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        apiClient.connect();
     }
 
     private void retrieveGPSLocation() {
@@ -173,6 +188,24 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public List<Film> getFilms() {
         return films;
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Location location = LocationServices.FusedLocationApi.getLastLocation(apiClient);
+        if (location != null) {
+            Log.d(KPIApplication.TAG, location.toString());
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 
     private class ViewPagerAdapter extends SmartFragmentStatePagerAdapter {
