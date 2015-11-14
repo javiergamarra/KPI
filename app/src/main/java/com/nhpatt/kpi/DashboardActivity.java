@@ -67,7 +67,7 @@ public class DashboardActivity extends AppCompatActivity
 
         EventBus.getDefault().register(this);
 
-        launchJob("github");
+//        launchJob("github");
         launchJob("shows");
         requestFilms();
 

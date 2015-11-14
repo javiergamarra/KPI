@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.test.espresso.IdlingResource;
 import android.util.Log;
 
 import com.evernote.android.job.Job;
@@ -16,6 +17,7 @@ import com.nhpatt.kpi.service.GitHubService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import de.greenrobot.event.EventBus;
 import retrofit.GsonConverterFactory;
@@ -25,11 +27,17 @@ import retrofit.Retrofit;
 /**
  * @author Javier Gamarra
  */
-public class GithubJob extends Job {
+public class GithubJob extends Job implements IdlingResource {
+
+    private boolean idle;
+    private ResourceCallback callback;
+
     @NonNull
     @Override
     protected Result onRunJob(Params params) {
         try {
+
+            idle = false;
 
             List<Commit> commits = loadFromDatabase();
             if (commits.isEmpty()) {
@@ -48,10 +56,20 @@ public class GithubJob extends Job {
             }
 
             EventBus.getDefault().post(new CommitPerYear(commits));
+
+
+            callback.onTransitionToIdle();
+            idle = true;
+
             return Result.SUCCESS;
         } catch (IOException e) {
             Log.e(KPIApplication.TAG, "Error retrieving commits", e);
         }
+
+
+        callback.onTransitionToIdle();
+        idle = true;
+
         return Result.FAILURE;
     }
 
@@ -80,5 +98,29 @@ public class GithubJob extends Job {
         writableDatabase.setTransactionSuccessful();
         writableDatabase.endTransaction();
         writableDatabase.close();
+    }
+
+    @Override
+    public String getName() {
+        return "githubJob";
+    }
+
+    @Override
+    public boolean isIdleNow() {
+        return idle;
+    }
+
+    @Override
+    public void registerIdleTransitionCallback(ResourceCallback callback) {
+        this.callback = callback;
+    }
+
+    public void start() {
+        Executors.newFixedThreadPool(3).submit(new Runnable() {
+            @Override
+            public void run() {
+                onRunJob(null);
+            }
+        });
     }
 }

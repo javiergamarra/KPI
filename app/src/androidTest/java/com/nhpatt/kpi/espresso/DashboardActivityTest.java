@@ -1,11 +1,14 @@
 package com.nhpatt.kpi.espresso;
 
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.nhpatt.kpi.DashboardActivity;
 import com.nhpatt.kpi.R;
+import com.nhpatt.kpi.jobs.GithubJob;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,6 +35,17 @@ public class DashboardActivityTest {
     @Test
     public void viewPagerIsDisplayed() {
 
-        onView(withId(R.id.view_pager)).check(matches(isDisplayed()));
+        GithubJob githubJob = new GithubJob();
+
+        githubJob.registerIdleTransitionCallback(new IdlingResource.ResourceCallback() {
+            @Override
+            public void onTransitionToIdle() {
+                onView(withId(R.id.view_pager)).check(matches(isDisplayed()));
+            }
+        });
+
+        Espresso.registerIdlingResources(githubJob);
+
+        githubJob.start();
     }
 }
