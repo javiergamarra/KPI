@@ -1,15 +1,20 @@
 package com.nhpatt.kpi.jobs;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.evernote.android.job.Job;
 import com.nhpatt.kpi.app.KPIApplication;
+import com.nhpatt.kpi.database.KPIOpenHelper;
 import com.nhpatt.kpi.models.Commit;
 import com.nhpatt.kpi.models.CommitPerYear;
 import com.nhpatt.kpi.service.GitHubService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -25,15 +30,24 @@ public class GithubJob extends Job {
     @Override
     protected Result onRunJob(Params params) {
         try {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://api.github.com")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
 
-            GitHubService service = retrofit.create(GitHubService.class);
+            List<Commit> commits = loadFromDatabase();
+            if (commits.isEmpty()) {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://api.github.com")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
 
-            Response<List<Commit>> response = service.commitsPerWeek("nhpatt", "KPI").execute();
-            EventBus.getDefault().post(new CommitPerYear(response.body()));
+                GitHubService service = retrofit.create(GitHubService.class);
+
+                Response<List<Commit>> response = service.commitsPerWeek("nhpatt", "KPI").execute();
+
+                commits = response.body();
+
+                storeCommits(commits);
+            }
+
+            EventBus.getDefault().post(new CommitPerYear(commits));
             return Result.SUCCESS;
         } catch (IOException e) {
             Log.e(KPIApplication.TAG, "Error retrieving commits", e);
