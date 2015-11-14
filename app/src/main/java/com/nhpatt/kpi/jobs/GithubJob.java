@@ -52,4 +52,19 @@ public class GithubJob extends Job {
         }
         return commits;
     }
+
+    private void storeCommits(List<Commit> commits) {
+        SQLiteDatabase writableDatabase = new KPIOpenHelper(getContext()).getWritableDatabase();
+
+        writableDatabase.beginTransaction();
+        for (Commit commit : commits) {
+            ContentValues values = new ContentValues();
+            values.put(Commit.WEEK, commit.getWeek());
+            values.put(Commit.TOTAL, commit.getTotal());
+            writableDatabase.insert(Commit.TABLE_NAME, null, values);
+        }
+        writableDatabase.setTransactionSuccessful();
+        writableDatabase.endTransaction();
+        writableDatabase.close();
+    }
 }
